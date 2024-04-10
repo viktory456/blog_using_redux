@@ -5,11 +5,18 @@ import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useGetPostsQuery } from "./postsSlice";
 
 const SinglePostPage = () => {
     const { postId } = useParams()
 
-    const post = useSelector((state) => selectPostById(state, Number(postId)))
+    const { post } = useGetPostsQuery('getPosts', {
+        selectFromResult: ({ data }) => ({
+            post: data?.entities[postId]
+        }),
+    })
+
+    // const post = useSelector((state) => selectPostById(state, Number(postId)))
 
     if (!post) {
         return (
